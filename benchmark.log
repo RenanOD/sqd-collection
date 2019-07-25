@@ -8,3 +8,7 @@ Problem   & tref       & mem_ref      & t/tref & mem/mem_ref & tcopy/tref & memc
  primal1  & 0.002258 s & 0.459152 MiB & 1.266   & 0.896 & 2.377    & 1.822 \\
  s268     & 0.000006 s & 0.007264 MiB & 1.197   & 0.947 & 1.66     & 1.112 \\
  zecevic2 & 0.000007 s & 0.005872 MiB & 1.015   & 0.97  & 1.368    & 0.796 \\
+
+ref: ldl(Afull)
+test: ldl(Au)
+copy: sparse(Symmetric(Au))
