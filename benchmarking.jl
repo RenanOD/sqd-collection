@@ -23,8 +23,8 @@ for (i, p) in enumerate(problems)
   @test norm(A * (LDLonlyupper \ rhs) - rhs) < 1e-6
 
   # benchmark
-  benchmark_ref = @benchmark ldl($A)                                         samples=5 evals=1
-  benchmark_onlyupper = @benchmark ldl($Aonlyupper, onlyupper = true)        samples=5 evals=1
+  benchmark_ref = @benchmark ldl($A)                                         samples=10 evals=1
+  benchmark_onlyupper = @benchmark ldl($Aonlyupper, onlyupper = true)        samples=10 evals=1
 
   tref[i] = round(benchmark_ref.times[1] / 1e9, digits = 6)
   memref[i] = round(benchmark_ref.memory[1] / 1e6, digits = 4)
@@ -32,12 +32,12 @@ for (i, p) in enumerate(problems)
   memrel[i] = round(benchmark_onlyupper.memory[1] / benchmark_ref.memory[1], digits = 3)
 end
 
-benchmarktable = DataFrame(problem = problems, tref = tref, memref = memref, trel = trel, memrel = memrel)
+benchmarktable = DataFrame(problem = problems, tref_s = tref, memref_MB = memref, trel = trel, memrel = memrel)
 
 open("benchmark.log", "w") do logfile
   println(logfile, "Avg trel: $(sum(trel)/np)")
   println(logfile, "Avg memrel: $(sum(memrel)/np)")
-  println(logfile, "So using only the upper triangular is in average $(round((1 - sum(trel)/np)*100, digits = 1)) % faster while using $(round((1 - sum(memrel)/np)*100, digits = 1)) % less memory.")
+  println(logfile, "So using only the upper triangular is on average $(round((1 - sum(trel)/np)*100, digits = 1)) % faster while using $(round((1 - sum(memrel)/np)*100, digits = 1)) % less memory.")
 
   markdown_table(logfile, benchmarktable)
 end
